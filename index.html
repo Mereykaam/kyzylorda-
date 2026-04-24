@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>InfoHub | Қызылорда - Жаңалықтар, Ауа райы, Валюта бағамы</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, 'Segoe UI', 'Roboto', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background: #f4f7fc;
+      color: #1e293b;
+      padding: 20px;
+      transition: all 0.2s;
+    }
+
+    /* контейнер */
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    /* header - Қызылорда стилі */
+    header {
+      background: linear-gradient(135deg, #1e3c2c, #2a6e3f);
+      color: white;
+      padding: 1.5rem 2rem;
+      border-radius: 32px;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    header h1 {
+      font-size: 2rem;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    header p {
+      margin-top: 8px;
+      opacity: 0.9;
+      font-size: 1rem;
+    }
+
+    /* грид - негізгі */
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+      gap: 1.8rem;
+      margin-bottom: 2.5rem;
+    }
+
+    /* карточка стилі */
+    .card {
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(2px);
+      border-radius: 28px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s;
+      border: 1px solid rgba(255,255,255,0.6);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 28px -12px rgba(0, 0, 0, 0.2);
+    }
+
+    .card h2 {
+      font-size: 1.6rem;
+      border-left: 5px solid #2a6e3f;
+      padding-left: 15px;
+      margin-bottom: 1.2rem;
+      color: #1e3c2c;
+    }
+
+    /* жаңалықтар стилі */
+    .news-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1.8rem;
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 5px;
+    }
+
+    .news-item {
+      background: #f0f4f8;
+      padding: 1rem;
+      border-radius: 20px;
+      border-left: 4px solid #2a6e3f;
+      transition: background 0.2s;
+    }
+
+    .news-item strong {
+      color: #1a5a38;
+      display: block;
+      font-size: 0.85rem;
+      margin-bottom: 6px;
+    }
+
+    .news-item p {
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    .add-news-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .add-news-form input, .add-news-form textarea {
+      padding: 12px 16px;
+      border: 1px solid #cbd5e1;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      background: white;
+      transition: 0.2s;
+      font-family: inherit;
+    }
+
+    .add-news-form textarea {
+      border-radius: 24px;
+      resize: vertical;
+      min-height: 70px;
+    }
+
+    .add-news-form input:focus, .add-news-form textarea:focus {
+      outline: none;
+      border-color: #2a6e3f;
+      box-shadow: 0 0 0 2px rgba(42,110,63,0.2);
+    }
+
+    button {
+      background: #2a6e3f;
+      color: white;
+      border: none;
+      padding: 12px 16px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    button:hover {
+      background: #1e5a34;
+      transform: scale(0.98);
+    }
+
+    /* ауа райы мен валюта ішіндегі мазмұн */
+    .weather-info, .currency-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .weather-main {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      background: #e6f0e8;
+      padding: 1rem;
+      border-radius: 28px;
+    }
+
+    .temp-big {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #1e5a34;
+    }
+
+    .weather-desc {
+      text-transform: capitalize;
+      font-size: 1.1rem;
+    }
+
+    .city-name {
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+
+    .refresh-btn {
+      background: #2c7da0;
+      padding: 8px 16px;
+      font-size: 0.8rem;
+      margin-top: 8px;
+      width: fit-content;
+    }
+
+    .currency-grid {
+      gap: 12px;
+    }
+
+    .currency-row {
+      display: flex;
+      justify-content: space-between;
+      background: #f0f4f8;
+      padding: 14px 20px;
+      border-radius: 50px;
+      font-weight: 500;
+      align-items: center;
+    }
+
+    .currency-rate {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #1f6e2f;
+    }
+
+    .currency-code {
+      font-size: 1.2rem;
+      background: #ffffffb3;
+      padding: 4px 12px;
+      border-radius: 30px;
+    }
+
+    /* footer */
+    footer {
+      text-align: center;
+      margin-top: 2rem;
+      padding: 1rem;
+      color: #5b6e8c;
+      font-size: 0.8rem;
+      border-top: 1px solid #cbd5e1;
+    }
+
+    /* Мобильді нұсқа (responsive) */
+    @media (max-width: 768px) {
+      body {
+        padding: 12px;
+      }
+      header {
+        padding: 1.2rem;
+        border-radius: 24px;
+      }
+      header h1 {
+        font-size: 1.6rem;
+      }
+      .card {
+        padding: 1.2rem;
+      }
+      .card h2 {
+        font-size: 1.4rem;
+      }
+      .temp-big {
+        font-size: 2.2rem;
+      }
+      .currency-row {
+        padding: 10px 14px;
+      }
+      button {
+        padding: 10px 14px;
+      }
+      .news-list {
+        max-height: 340px;
+      }
+      .add-news-form input, .add-news-form textarea {
+        padding: 10px 14px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .dashboard {
+        gap: 1.2rem;
+      }
+      .weather-main {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .temp-big {
+        font-size: 2rem;
+      }
+    }
+
+    /* скролл жолағы */
+    .news-list::-webkit-scrollbar {
+      width: 5px;
+    }
+    .news-list::-webkit-scrollbar-track {
+      background: #e2e8f0;
+      border-radius: 10px;
+    }
+    .news-list::-webkit-scrollbar-thumb {
+      background: #2a6e3f;
+      border-radius: 10px;
+    }
+
+    .error-msg {
+      color: #b91c1c;
+      background: #ffe6e6;
+      padding: 10px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>🌾 InfoHub · Қызылорда ақпарат орталығы</h1>
+    <p>Сыр өңірінің жаңалықтары, нақты ауа райы және валюта бағамы (KZT)</p>
+  </header>
+
+  <div class="dashboard">
+    <!-- 1️⃣ Жаңалықтар бөлімі (Қызылордаға арналған) -->
+    <div class="card">
+      <h2>📰 Қызылорда жаңалықтары</h2>
+      <div id="newsContainer" class="news-list">
+        <!-- JS арқылы массивтен шығады -->
+      </div>
+      <div class="add-news-form">
+        <input type="text" id="newsTitle" placeholder="Жаңалық тақырыбы (мысалы: Сырдария жағалауы)" autocomplete="off">
+        <textarea id="newsDesc" placeholder="Қызылордаға қатысты сипаттама ..."></textarea>
+        <button id="addNewsBtn">➕ Жаңа жаңалық қосу</button>
+      </div>
+    </div>
+
+    <!-- 2️⃣ Ауа райы көрсету (Қызылорда қаласы) OpenWeatherMap API -->
+    <div class="card">
+      <h2>🌾 Ауа райы · Қызылорда</h2>
+      <div id="weatherInfo" class="weather-info">
+        <!-- динамикалық жүктеу -->
+        <div>🌤️ Қызылорда бойынша деректер жүктелуде...</div>
+      </div>
+      <button id="refreshWeatherBtn" class="refresh-btn">🔄 Жаңарту</button>
+      <p style="font-size: 0.7rem; margin-top: 12px; color:#6c757d;">*Қызылорда қаласы бойынша нақты метеодеректер</p>
+    </div>
+
+    <!-- 3️⃣ Валюта бағамы (KZT) USD, EUR, RUB -->
+    <div class="card">
+      <h2>💱 Валюта бағамы (KZT)</h2>
+      <div id="currencyContainer" class="currency-grid">
+        <div>Валюта курстары жүктелуде...</div>
+      </div>
+      <button id="refreshCurrencyBtn" class="refresh-btn" style="margin-top: 12px;">🔄 Курсты жаңарту</button>
+      <p style="font-size: 0.7rem; margin-top: 8px;">*ExchangeRate API арқылы нақты уақыттағы бағам</p>
+    </div>
+  </div>
+  <footer>
+    © 2025 InfoHub | Қызылорда жаңалықтары динамикалық | Ауа райы (OpenWeatherMap) & Валюта (ExchangeRate API)
+  </footer>
+</div>
+
+<script>
+  // ----------------------------- 1️⃣ ЖАҢАЛЫҚТАР МАССИВІ (ҚЫЗЫЛОРДА ТАҚЫРЫБЫ) -----------------------------
+  let newsArray = [
+    { id: 1, title: "Қызылордада «Сыр бойы» индустриалды аймағы кеңейеді", description: "Өңірде жаңа кәсіпорындар ашылып, 500-ден астам жұмыс орны құрылады." },
+    { id: 2, title: "Сырдария өзенінің арнасын тазарту жұмыстары басталды", description: "Экологиялық жоба аясында өзен жағалауы көркейтіліп, су тасқынының алдын алу шаралары қолға алынды." },
+    { id: 3, title: "Қорқыт Ата ескерткішінің маңы жаңғыртылды", description: "Туризмді дамыту мақсатында кешен айналасы абаттандырылып, жаяу жүргіншілер аймағы ашылды." }
+  ];
+
+  // Жаңалықтарды рендеринг функциясы
+  function renderNews() {
+    const newsContainer = document.getElementById('newsContainer');
+    if (!newsContainer) return;
+    if (newsArray.length === 0) {
+      newsContainer.innerHTML = `<div class="news-item" style="text-align:center; opacity:0.7;">📭 Қызылорда бойынша жаңалықтар жоқ. Бірінші жаңалықты қосыңыз!</div>`;
+      return;
+    }
+    let html = '';
+    // жаңа жаңалықтар бірінші болып көрінсін (reverse)
+    [...newsArray].reverse().forEach(news => {
+      html += `
+        <div class="news-item">
+          <strong>📌 ${escapeHtml(news.title)}</strong>
+          <p>${escapeHtml(news.description)}</p>
+        </div>
+      `;
+    });
+    newsContainer.innerHTML = html;
+  }
+
+  // Қарапайым XSS қорғанысы
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>]/g, function(m) {
+      if (m === '&') return '&amp;';
+      if (m === '<') return '&lt;';
+      if (m === '>') return '&gt;';
+      return m;
+    }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+      return c;
+    });
+  }
+
+  // Жаңа жаңалық қосу (Қызылорда тақырыбында)
+  function addNewsItem() {
+    const titleInput = document.getElementById('newsTitle');
+    const descInput = document.getElementById('newsDesc');
+    let title = titleInput.value.trim();
+    let description = descInput.value.trim();
+    
+    if (!title || !description) {
+      alert('Тақырып пен сипаттаманы толтырыңыз!');
+      return;
+    }
+    // максималды ұзындық шегі
+    if (title.length > 100) title = title.slice(0,100);
+    if (description.length > 250) description = description.slice(0,250);
+    
+    const newId = Date.now();
+    newsArray.push({ id: newId, title: title, description: description });
+    renderNews();
+    // өрістерді тазалау
+    titleInput.value = '';
+    descInput.value = '';
+  }
+
+  // ----------------------------- 2️⃣ АУА РАЙЫ (ҚЫЗЫЛОРДА) OpenWeatherMap API -----------------------------
+  // Қызылорда қаласының ағылшынша атауы: Kyzylorda / Kzyl-Orda / Qyzylorda. API үшін "Kyzylorda" стандартты
+  const cityName = "Kyzylorda";
+  const apiKey = "b6907d289e10d714a6e88b30761fae0a";  // OpenWeatherMap тестілік API ключ (демо)
+  // Нақты жобада өз кілтіңізді пайдаланыңыз. Бірақ бұл жұмыс істеуі тиіс (rate limit болуы мүмкін)
+  
+  async function fetchWeather() {
+    const weatherDiv = document.getElementById('weatherInfo');
+    if (!weatherDiv) return;
+    weatherDiv.innerHTML = `<div>🌀 Қызылорда бойынша ауа райы алынуда...</div>`;
+    try {
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric&lang=kk`;
+      const response = await fetch(url);
+      if (!response.ok) {
+        // Егер API қателессе, резервтік деректерді көрсетеміз
+        throw new Error(`API қате: ${response.status}`);
+      }
+      const data = await response.json();
+      // Қала атауы API-дан келгендей
+      const city = data.name;
+      const temp = Math.round(data.main.temp);
+      const description = data.weather[0].description;
+      const iconCode = data.weather[0].icon;
+      const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+      
+      const weatherHtml = `
+        <div class="weather-main">
+          <div>
+            <div class="city-name">📍 ${city}, Қазақстан</div>
+            <div class="temp-big">${temp}°C</div>
+            <div class="weather-desc">${description}</div>
+          </div>
+          <div>
+            <img src="${iconUrl}" alt="${description}" style="width:70px; height:70px;">
+          </div>
+        </div>
+        <div style="margin-top: 8px; font-size:0.85rem; background:#e6f0e8; border-radius: 20px; padding: 8px 12px;">
+          💧 Ылғалдылық: ${data.main.humidity}% &nbsp;|&nbsp; 💨 Жел: ${Math.round(data.wind.speed)} м/с
+        </div>
+      `;
+      weatherDiv.innerHTML = weatherHtml;
+    } catch (error) {
+      console.error("Weather API error (Қызылорда):", error);
+      // Қолмен енгізілген деректер - Қызылорданың нақты орташа климатына сәйкес
+      weatherDiv.innerHTML = `
+        <div class="error-msg">⚠️ Ауа райын жүктеу сәтсіз. Келесі демо-деректер көрсетіледі (Қызылорда)</div>
+        <div class="weather-main" style="background:#f9e2cf;">
+          <div>
+            <div class="city-name">📍 Қызылорда, Қазақстан</div>
+            <div class="temp-big">+24°C</div>
+            <div class="weather-desc">Ашық, күн шуақты</div>
+          </div>
+          <div>☀️🌾</div>
+        </div>
+        <div style="margin-top: 8px; font-size:0.8rem;">Ылғалдылық: 38% | Жел: 3.2 м/с</div>
+      `;
+    }
+  }
+
+  // ----------------------------- 3️⃣ ВАЛЮТА БАҒАМЫ (ExchangeRate API) KZT-ға қатысты ----------------
+  async function fetchExchangeRates() {
+    const currencyDiv = document.getElementById('currencyContainer');
+    if (!currencyDiv) return;
+    currencyDiv.innerHTML = `<div>💰 Валюта бағамы жаңартылуда (USD/EUR/RUB → KZT)...</div>`;
+    try {
+      const url = "https://api.exchangerate-api.com/v4/latest/USD";
+      const response = await fetch(url);
+      if (!response.ok) throw new Error("Currency API error");
+      const data = await response.json();
+      const rates = data.rates;
+      const usdToKzt = rates["KZT"];
+      if (!usdToKzt) throw new Error("KZT табылмады");
+      const eurToUsd = rates["EUR"];
+      const eurToKzt = eurToUsd * usdToKzt;
+      const rubToUsd = rates["RUB"];
+      const rubToKzt = rubToUsd * usdToKzt;
+      
+      const formatCurrency = (value) => value.toFixed(2);
+      const currencyHtml = `
+        <div class="currency-row">
+          <span>🇺🇸 USD / KZT</span>
+          <span class="currency-rate">${formatCurrency(usdToKzt)} ₸</span>
+        </div>
+        <div class="currency-row">
+          <span>🇪🇺 EUR / KZT</span>
+          <span class="currency-rate">${formatCurrency(eurToKzt)} ₸</span>
+        </div>
+        <div class="currency-row">
+          <span>🇷🇺 RUB / KZT</span>
+          <span class="currency-rate">${formatCurrency(rubToKzt)} ₸</span>
+        </div>
+        <div style="font-size:0.7rem; text-align:center; margin-top:6px;">*Нақты нарықтық бағам (exchange-rate API)</div>
+      `;
+      currencyDiv.innerHTML = currencyHtml;
+    } catch (err) {
+      console.error("Currency fetch error: ", err);
+      // Қолмен енгізілген деректер (резерв)
+      currencyDiv.innerHTML = `
+        <div class="currency-row"><span>🇺🇸 USD / KZT</span><span class="currency-rate">469.80 ₸</span></div>
+        <div class="currency-row"><span>🇪🇺 EUR / KZT</span><span class="currency-rate">507.50 ₸</span></div>
+        <div class="currency-row"><span>🇷🇺 RUB / KZT</span><span class="currency-rate">5.12 ₸</span></div>
+        <div class="error-msg" style="margin-top:8px;">⚠️ API қатесі, демо-деректер көрсетілуде</div>
+      `;
+    }
+  }
+
+  // ----------------------------- БАСТАПҚЫ ЖҮКТЕУ ЖӘНЕ ОҚИҒАЛАР -----------------------------
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1) Жаңалықтарды шығару (Қызылорда)
+    renderNews();
+    
+    // 2) Ауа райын көрсету (Қызылорда)
+    fetchWeather();
+    
+    // 3) Валюта бағамын көрсету
+    fetchExchangeRates();
+    
+    // 4) Жаңалық қосу батырмасы (динамикалық элемент)
+    const addBtn = document.getElementById('addNewsBtn');
+    if (addBtn) {
+      addBtn.addEventListener('click', addNewsItem);
+    }
+    
+    // 5) Ауа райын жаңарту батырмасы (қосымша динамика)
+    const refreshWeatherBtn = document.getElementById('refreshWeatherBtn');
+    if (refreshWeatherBtn) {
+      refreshWeatherBtn.addEventListener('click', () => {
+        fetchWeather();
+      });
+    }
+    
+    // 6) Валюта бағамын жаңарту батырмасы
+    const refreshCurrencyBtn = document.getElementById('refreshCurrencyBtn');
+    if (refreshCurrencyBtn) {
+      refreshCurrencyBtn.addEventListener('click', () => {
+        fetchExchangeRates();
+      });
+    }
+    
+    // Ыңғайлылық үшін: жаңалық тақырыбында Enter басу
+    const titleInput = document.getElementById('newsTitle');
+    if (titleInput) {
+      titleInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          addNewsItem();
+        }
+      });
+    }
+  });
+  
+</script>
+</body>
+</html>
